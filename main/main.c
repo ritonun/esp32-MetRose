@@ -2,6 +2,8 @@
 #include "nvs_flash.h"
 #include "esp_log.h"
 #include "wifi.h"
+#include "tisseo.h"
+#include "config.h"
 
 static const char* TAG = "main";
 
@@ -17,4 +19,6 @@ void app_main(void)
 
     ESP_LOGI(TAG, "Starting Wi-Fi Station example...");
     wifi_init_sta();  // from wifi.c
+
+    http_wih_url(URL); // from tisseo.c
 }

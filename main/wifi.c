@@ -13,7 +13,7 @@
 #include "lwip/sys.h"
 
 #include "wifi.h" 
-#include "wifi_config.h"
+#include "config.h"
 
 #define MAXIMUM_RETRY 5
 

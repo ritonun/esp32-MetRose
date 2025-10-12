@@ -2,6 +2,7 @@ build/
 sdkconfig
 sdkconfig.old
 main/wifi_config.h
+main/config.h
 
 .vscode/
 .devcontainer/
