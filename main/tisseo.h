@@ -5,4 +5,3 @@
 #include "cJSON.h"
 
 cJSON *tisseo_get_stops_schedules(const char *stop_area_id, const char *line_id);
-

@@ -3,6 +3,7 @@
 #include "esp_log.h"
 #include "wifi.h"
 #include "tisseo.h"
+#include "tisseo_parser.h"
 #include "config.h"
 
 static const char* TAG = "main";
@@ -31,5 +32,18 @@ void app_main(void)
         cJSON_Delete(resp);
     } else {
         ESP_LOGE("TISSEO", "Failed to get stops schedules");
+    }
+
+    datetimes_list_str_t *datetimes = extract_departure_time_str(resp);
+    if (!datetimes) {
+        ESP_LOGE("TISSEO", "No departures found");
+        return;
+    }
+
+    for (int i = 0; i < datetimes->len; i++) {
+        if (datetimes->departures_times[i]) {
+            printf("Departure: %s\n", datetimes->departures_times[i]);
+    
+        }
     }
 }

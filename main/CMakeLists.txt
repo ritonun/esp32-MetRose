@@ -1,3 +1,3 @@
 idf_component_register(
-    SRCS "main.c" "wifi.c" "tisseo.c"
+    SRCS "tisseo_parser.c" "main.c" "wifi.c" "tisseo.c" "tisseo_parser.c"
     INCLUDE_DIRS ".")

@@ -20,7 +20,6 @@ typedef struct {
     esp_err_t err;
 } tisseo_response_t;
 
-
 static esp_err_t http_event_handler(esp_http_client_event_t *evt)
 {
     tisseo_response_t *resp = (tisseo_response_t *)evt->user_data;
