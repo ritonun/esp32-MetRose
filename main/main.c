@@ -20,5 +20,16 @@ void app_main(void)
     ESP_LOGI(TAG, "Starting Wi-Fi Station example...");
     wifi_init_sta();  // from wifi.c
 
-    http_wih_url(URL); // from tisseo.c
+    // tisseo.c call
+    const char *stop_area = "stop_area:SA_731";
+    const char *line_id = "line:68";
+    cJSON *resp = tisseo_get_stops_schedules(stop_area, line_id);
+    if (resp) {
+        char *pretty = cJSON_Print(resp);
+        ESP_LOGI("TISSEO", "Response:\n%s", pretty);
+        free(pretty);
+        cJSON_Delete(resp);
+    } else {
+        ESP_LOGE("TISSEO", "Failed to get stops schedules");
+    }
 }
