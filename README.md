@@ -1,1 +1,21 @@
 # ESP32 MetRose
+
+## Use
+Create a config.h file in main/ with values:
+```C
+#pragma once
+
+#define WIFI_SSID "YOUR_WIFI_SSID"
+#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+```
+
+## Functionnality
+### Current functionnality
+- make an api call to a specific station & line
+- parse the json answer to get the next departures datetimes
+- convert them into timestamps
+
+### To Do
+- mapper to map each station/next departures to an I/O led
+- I/O ON or OFF dependant on time and presence of a train/tram
+- monitoring of memory consumption
