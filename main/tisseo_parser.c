@@ -3,6 +3,7 @@
 #include "cJSON.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "tisseo_parser.h"
 
 const char *TAG = "tisseo_parser";
@@ -67,4 +68,28 @@ datetimes_list_str_t *extract_departure_time_str(cJSON *resp)
     cJSON_Delete(resp);
 
     return datetimes;
+}
+
+time_t* convert_datetimes_str_to_timestamps(datetimes_list_str_t *datetimes) {
+    if (!datetimes || datetimes->len == 0) {
+        ESP_LOGE(TAG, "List of datetimes_str is empty/does not exist");
+        return NULL;
+    }
+
+    time_t *timestamps = malloc(sizeof(time_t) * datetimes->len);
+    if (!timestamps) {
+        ESP_LOGE(TAG, "Failed to create timestamp memory space");
+        return NULL;
+    }
+
+    for (int i=0; i<datetimes->len; i++) {
+        struct tm tm_time = {0};
+        if (strptime(datetimes->departures_times[i], "%Y-%m-%d %H:%M:%S", &tm_time) != NULL) {
+            timestamps[i] = mktime(&tm_time);
+        } else {
+            timestamps[i] = -1;
+        }
+    }
+
+    return timestamps;
 }
