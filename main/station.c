@@ -83,7 +83,8 @@ void update_station_departure(int station_index) {
 
 
     // free memory
+    ESP_LOGI("FREE", "TIMESTAMP:");
     free(timestamps);
+    ESP_LOGI("FREE", "DATETIMES:");
     free(datetimes);
-    cJSON_Delete(resp);
 }
