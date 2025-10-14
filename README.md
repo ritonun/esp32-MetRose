@@ -1,7 +1,6 @@
 # ESP32 MetRose
 
 ## To Do
-- fix memory leak in station.c -> end of fn update_station_departure, cJSON_Delete(resp) create a hard error, but without it there is memory leak so...
 - add stat about api utilisation (nb of call, etc...)
 
 ## Use
