@@ -14,16 +14,6 @@ station_t stations[NUM_STATIONS];
 void init_stations(void) {
     /*Initialise each station*/
     stations[0].index = 0;
-    strncpy(stations[0].name, "Hippodrome", MAX_NAME_LEN);
-    strncpy(stations[0].stop_area_id, "stop_area:SA_731", STOP_AREA_ID_LEN);
-    reset_station(stations[0].index);
-
-    stations[1].index = 1;
-    strncpy(stations[1].name, "Zenith", MAX_NAME_LEN);
-    strncpy(stations[1].stop_area_id, "stop_area:SA_987", STOP_AREA_ID_LEN);
-    reset_station(stations[1].index);
-
-    stations[0].index = 0;
     strncpy(stations[0].name, "Palais de Justice", MAX_NAME_LEN);
     strncpy(stations[0].stop_area_id, "stop_area:SA_774", STOP_AREA_ID_LEN);
     reset_station(stations[0].index);
@@ -160,6 +150,8 @@ void reset_station(int station_index) {
 void update_station_departure(int station_index) {
     
     // make api request for station
+    ESP_LOGI(TAG, "Trying station %s", stations[station_index].name);
+
     cJSON *resp = tisseo_get_stops_schedules(stations[station_index].stop_area_id, LINE);
     if (resp) {
         ESP_LOGI(TAG, "Response for station %s OK", stations[station_index].name);

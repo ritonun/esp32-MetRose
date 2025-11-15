@@ -32,9 +32,9 @@ void app_main(void)
     ESP_LOGI(TAG, "Starting Wi-Fi Station example...");
     wifi_init_sta();  // from wifi.c
     
-    print_memory();
+    // print_memory();
     init_stations();
-    print_memory();
+    // print_memory();
     for (int s=0; s<NUM_STATIONS; s++) {
         update_station_departure(s);
         print_memory();

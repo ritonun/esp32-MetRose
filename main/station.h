@@ -5,7 +5,7 @@
 
 #define MAX_DEPARTURES 10
 #define MAX_NAME_LEN 32
-#define NUM_STATIONS 2
+#define NUM_STATIONS 25
 #define STOP_AREA_ID_LEN 20
 #define LINE "line:68"
 
