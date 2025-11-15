@@ -11,6 +11,7 @@
 #include "station.h"
 
 #define DELAY_API_STATION_UPDATE 5*60*1000 // 5 min
+#define DELAY_LED_UPDATE 1*10*1000 // 10s
 
 static const char* TAG = "main";
 
@@ -32,6 +33,17 @@ void update_station_api_call(void *pvParameters) {
         }
 
         // Wait before running again
+        vTaskDelay(delay_ticks);
+    }
+}
+
+void update_led(void *pvParameters) {
+    const TickType_t delay_ticks = pdMS_TO_TICKS(DELAY_LED_UPDATE);
+
+    while (1) {
+        // update led
+        ESP_LOGI(TAG, "FUTURE LED UPDATE FN to be implemented");
+
         vTaskDelay(delay_ticks);
     }
 }
