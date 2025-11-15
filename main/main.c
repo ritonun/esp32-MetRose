@@ -14,11 +14,11 @@
 #include "led_controller.h"
 
 #define DELAY_API_STATION_UPDATE 5*60*1000 // 5 min
-#define DELAY_LED_UPDATE 1*10*1000 // 10s
-#define DELAY_DISPLAY_LED 1*1*1000 // 1s
-#define LED_TASK_PRIORITY 10
-#define API_TASK_PRIORITY 5
-#define DISPLAY_LED_TASK_PRIORITY 15
+#define DELAY_LED_UPDATE 2*1000 // 1
+#define DELAY_BLINK_LED 2*250 // 500ms
+#define LED_TASK_PRIORITY 5
+#define API_TASK_PRIORITY 2
+#define BLINK_LED_PRIORITY 8
 
 
 struct tm timeinfo = { 0 };
@@ -61,14 +61,18 @@ void update_led(void *pvParameters) {
     }
 }
 
-void display_leds(void *pvParameters) {
-    const TickType_t delay_ticks = pdMS_TO_TICKS(DELAY_DISPLAY_LED);
+void blink_led(void *pvParameters) {
+    const TickType_t delay_ticks = pdMS_TO_TICKS(DELAY_BLINK_LED);
 
-    while(1) {
+    while (1) {
+
+        // blink led
         set_leds();
+
         vTaskDelay(delay_ticks);
     }
 }
+
 
 void app_main(void)
 {
@@ -115,6 +119,14 @@ void app_main(void)
         4096,
         NULL,
         LED_TASK_PRIORITY,
+        NULL
+    );
+    xTaskCreate(
+        blink_led,
+        "blink_led",
+        2048,
+        NULL,
+        BLINK_LED_PRIORITY,
         NULL
     );
 }

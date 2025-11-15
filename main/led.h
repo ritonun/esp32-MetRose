@@ -16,3 +16,4 @@ void check_current_departure(int station_index);
 void initialize_sntp(void);
 void init_leds(void);
 void set_leds(void);
+void clignotement_leds(void);
