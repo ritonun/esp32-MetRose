@@ -9,12 +9,16 @@
 #define STOP_AREA_ID_LEN 20
 #define LINE "line:68"
 
+#define TERMINUS_1 0
+#define TERMINUS_2 (NUM_STATIONS - 1)
+
 typedef struct {
-    int index;                          // LED Index
-    char name[MAX_NAME_LEN];            // Station name
-    char stop_area_id[STOP_AREA_ID_LEN];              // stop aread id of the station
-    time_t departures[MAX_DEPARTURES];  // timestamps of next departures
-    int departures_stored;              // number of timestamps/next departures stored
+    int index;                              // LED Index
+    char name[MAX_NAME_LEN];                // Station name
+    char stop_area_id[STOP_AREA_ID_LEN];    // stop aread id of the station
+    time_t departures1[MAX_DEPARTURES];     // timestamps for departures to terminus 1
+    time_t departures2[MAX_DEPARTURES];     // timestamps for departures to terminus 2
+    int departures_stored;                  // number of timestamps/next departures stored
 } station_t;
 
 extern station_t stations[NUM_STATIONS];    // array of station, extern used in other files

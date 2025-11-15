@@ -36,7 +36,7 @@ void app_main(void)
     init_stations();
 
     // appel api pour actualiser les departures times de toutes les stations
-    for (int s=0; s<NUM_STATIONS; s++) {
+    for (int s=0; s<3; s++) {
         update_station_departure(s);
         print_memory();
     }

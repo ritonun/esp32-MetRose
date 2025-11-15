@@ -142,7 +142,8 @@ void init_stations(void) {
 void reset_station(int station_index) {
     /*Reset des var de la station*/
     for (int i=0; i<MAX_DEPARTURES; i++) {
-        stations[station_index].departures[i] = 0;
+        stations[station_index].departures1[i] = 0;
+        stations[station_index].departures2[i] = 0;
     }
     stations[station_index].departures_stored = 0;
 }
@@ -151,7 +152,7 @@ void update_station_departure(int station_index) {
     // make api request for station
     ESP_LOGI(TAG, "Trying station %s", stations[station_index].name);
 
-    cJSON *resp = tisseo_get_stops_schedules(stations[station_index].stop_area_id, LINE);
+    cJSON *resp = tisseo_get_stops_schedules(station_index);
     if (resp) {
         ESP_LOGI(TAG, "Response for station %s OK", stations[station_index].name);
     } else {
@@ -160,18 +161,28 @@ void update_station_departure(int station_index) {
     }
 
     // extract datetimes from the json response
-    datetimes_list_str_t *datetimes = extract_departure_time_str(resp);
-    if (!datetimes || datetimes->len == 0) {
+    datetimes_list_str_t *datetimes = extract_departure_time_str(resp, station_index);
+    ESP_LOGI(TAG, "len_1: %d, len_2: %d", datetimes->len_1, datetimes->len_2);
+
+    /*
+    if (!datetimes || datetimes->len_1 || datetimes->len_2 == 0) {
         ESP_LOGE("STATION", "Datetimes: No departures found");
-        cJSON_Delete(resp);
+        //cJSON_Delete(resp);
         return;
-    }
+    }*/
 
     // convert the datetimes str into timestamps
-    time_t *timestamps = convert_datetimes_str_to_timestamps(datetimes);
-    if (!timestamps) {
-        ESP_LOGE("STATION", "Timestamps: Failed to convert departures into timestamps");
-        cJSON_Delete(resp);
+    time_t *timestamps_1 = convert_datetimes_str_to_timestamps(datetimes, 1);
+    if (!timestamps_1) {
+        ESP_LOGE("STATION", "Timestamps: Failed to convert departures 1 into timestamps");
+        //cJSON_Delete(resp);
+        free(datetimes);
+        return;
+    }
+    time_t *timestamps_2 = convert_datetimes_str_to_timestamps(datetimes, 2);
+    if (!timestamps_2) {
+        ESP_LOGE("STATION", "Timestamps: Failed to convert departures 2 into timestamps");
+        //cJSON_Delete(resp);
         free(datetimes);
         return;
     }
@@ -181,24 +192,29 @@ void update_station_departure(int station_index) {
 
     // store timestamp safely
     int store_count;
-    if (datetimes->len < MAX_DEPARTURES) {
-        store_count = datetimes->len;
+    if (datetimes->len_1 + datetimes->len_2 < MAX_DEPARTURES) {
+        store_count = datetimes->len_1 + datetimes->len_2;
     } else {
         store_count = MAX_DEPARTURES;
     }
     for (int i = 0; i < store_count; i++) {
-        stations[station_index].departures[i] = timestamps[i];
+        stations[station_index].departures1[i] = timestamps_1[i];
+        stations[station_index].departures2[i] = timestamps_2[i];
     }
     stations[station_index].departures_stored = store_count;
 
     // temporary code, print the datetimes and timestamps
-    for (int i = 0; i < datetimes->len; i++) {
-        printf("Departure: %s, tm: %lld\n", datetimes->departures_times[i], timestamps[i]);
+    for (int i = 0; i < datetimes->len_1; i++) {
+        printf("Departure: %s, tm: %lld\n", datetimes->departures_times_1[i], timestamps_1[i]);
+    } 
+    for (int i = 0; i < datetimes->len_2; i++) {
+        printf("Departure: %s, tm: %lld\n", datetimes->departures_times_2[i], timestamps_2[i]);
     }
 
     // free memory
     ESP_LOGI("FREE", "TIMESTAMP:");
-    free(timestamps);
+    free(timestamps_1);
+    free(timestamps_2);
     ESP_LOGI("FREE", "DATETIMES:");
     free(datetimes);
 }

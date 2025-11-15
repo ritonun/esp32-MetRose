@@ -9,6 +9,7 @@
 
 #include "tisseo.h"
 #include "config.h"
+#include "station.h"
 
 static const char *TAG = "tisseo";
 static const char *BASE_URL = "https://api.tisseo.fr/v2/stops_schedules.json";
@@ -86,11 +87,12 @@ static tisseo_response_t http_get(const char *url) {
     return resp;
 }
 
-cJSON *tisseo_get_stops_schedules(const char *stop_area_id, const char *line_id) {
+cJSON *tisseo_get_stops_schedules(int station_index) {
+    // const char *stop_area_id, const char *line_id
     char url[256];
     int write_url = snprintf(url, sizeof(url),
                     "%s?stopAreaId=%s&lineId=%s&key=%s",
-                    BASE_URL, stop_area_id, line_id, API_KEY);
+                    BASE_URL, stations[station_index].stop_area_id, LINE, API_KEY);
     if (write_url < 0 || write_url >= sizeof(url)) {
         ESP_LOGE(TAG, "Query parameter to be written in the url overflow 256 char");
         return NULL;
@@ -104,7 +106,6 @@ cJSON *tisseo_get_stops_schedules(const char *stop_area_id, const char *line_id)
         free(resp.buffer);
         return NULL;
     }
-
 
     cJSON *json = cJSON_Parse(resp.buffer);
     if (!json) {

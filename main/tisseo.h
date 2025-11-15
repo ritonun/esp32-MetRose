@@ -4,4 +4,4 @@
 #include "esp_err.h"
 #include "cJSON.h"
 
-cJSON *tisseo_get_stops_schedules(const char *stop_area_id, const char *line_id);
+cJSON *tisseo_get_stops_schedules(int station_index);
