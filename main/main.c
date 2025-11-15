@@ -46,7 +46,9 @@ void update_led(void *pvParameters) {
 
     while (1) {
         // update led
-        ESP_LOGI(TAG, "FUTURE LED UPDATE FN to be implemented");
+        for (int i=0; i<NUM_STATIONS; i++) {
+            ESP_LOGI(TAG, "LED UPDATE TO BE IMPLEMENTED");
+        }
 
         vTaskDelay(delay_ticks);
     }
@@ -79,7 +81,7 @@ void app_main(void)
     xTaskCreate(
         update_led,
         "update_led",
-        2048,
+        4096,
         NULL,
         LED_TASK_PRIORITY,
         NULL
