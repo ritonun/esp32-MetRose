@@ -141,7 +141,7 @@ time_t* convert_datetimes_str_to_timestamps(datetimes_list_str_t *datetimes, int
             if (strptime(datetimes->departures_times_1[i], "%Y-%m-%d %H:%M:%S", &tm_time) != NULL) {
                 timestamps[i] = mktime(&tm_time);
             } else {
-                timestamps[i] = -1;
+                timestamps[i] = -1000;
             }
         }
 
@@ -163,7 +163,7 @@ time_t* convert_datetimes_str_to_timestamps(datetimes_list_str_t *datetimes, int
             if (strptime(datetimes->departures_times_2[i], "%Y-%m-%d %H:%M:%S", &tm_time) != NULL) {
                 timestamps[i] = mktime(&tm_time);
             } else {
-                timestamps[i] = -1;
+                timestamps[i] = -1000;
             }
         }
 

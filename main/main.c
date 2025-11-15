@@ -9,6 +9,9 @@
 #include "tisseo_parser.h"
 #include "config.h"
 #include "station.h"
+#include "led.h"
+
+#include "led_controller.h"
 
 #define DELAY_API_STATION_UPDATE 5*60*1000 // 5 min
 #define DELAY_LED_UPDATE 1*10*1000 // 10s
@@ -16,6 +19,7 @@
 #define API_TASK_PRIORITY 5
 
 
+struct tm timeinfo = { 0 };
 static const char* TAG = "main";
 
 void print_memory(void) {
@@ -45,9 +49,10 @@ void update_led(void *pvParameters) {
     const TickType_t delay_ticks = pdMS_TO_TICKS(DELAY_LED_UPDATE);
 
     while (1) {
+
         // update led
         for (int i=0; i<NUM_STATIONS; i++) {
-            ESP_LOGI(TAG, "LED UPDATE TO BE IMPLEMENTED");
+            check_current_departure(i);
         }
 
         vTaskDelay(delay_ticks);
@@ -66,7 +71,22 @@ void app_main(void)
 
     ESP_LOGI(TAG, "Démarrage wifi...");
     wifi_init_sta();  // from wifi.c
+
+    led_manager_init(50);
+
+    initialize_sntp();
     
+
+
+    time_t now = 0;
+    int retry = 0;
+    const int retry_count = 10;
+    while(timeinfo.tm_year < (2020 - 1900) && ++retry < retry_count) {
+        ESP_LOGI("TIME", "Waiting for system time to be set...");
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
+        time(&now);
+        localtime_r(&now, &timeinfo);
+    }
     // initialisation de la liste de struct contenant les infos stations
     init_stations();
 
