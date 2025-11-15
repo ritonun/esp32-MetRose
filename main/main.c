@@ -65,39 +65,12 @@ void blink_led(void *pvParameters) {
     const TickType_t delay_ticks = pdMS_TO_TICKS(DELAY_BLINK_LED);
 
     while (1) {
-
         // blink led
         set_leds();
 
         vTaskDelay(delay_ticks);
     }
 }
-
-void fade_all_led(void *pvParameters) {
-    const TickType_t delay_ticks = pdMS_TO_TICKS(1);
-
-    while(1) {
-        uint8_t fade_incr = 3;
-        for (int i=0; i<50; i++) {
-            fading(i);
-        }
-        if (fade_pp) {
-            fade += fade_incr;
-        } else {
-            fade -= fade_incr;
-        }
-        
-        if (fade >= 255) {
-            fade = 255;
-            fade_pp = false;
-        } else if (fade < 0) {
-            fade = 0;
-            fade_pp = true;
-        }
-        vTaskDelay(delay_ticks);
-    }
-} 
-
 
 void app_main(void)
 {
@@ -154,14 +127,4 @@ void app_main(void)
         BLINK_LED_PRIORITY,
         NULL
     );
-    /*
-    xTaskCreate(
-        fade_all_led,
-        "fade_all_led",
-        1024,
-        NULL,
-        10,
-        NULL
-    );
-    */
 }

@@ -9,8 +9,6 @@
 uint8_t leds[NUM_STATIONS*2];
 static const char* TAG = "led";
 static bool clignotement = false;
-int16_t fade = 0;
-bool fade_pp = true;
 
 void initialize_sntp(void) {
     ESP_LOGI("TIME", "Initializing SNTP");
@@ -78,10 +76,4 @@ void set_leds(void) {
     }
     clignotement = !clignotement;
     show();
-}
-
-void fading(int led_index) {
-    if (leds[led_index] ==LED_CLIGNOTEMENT) {
-        setPixel(led_index, 0, 0, fade);
-    }   
 }
