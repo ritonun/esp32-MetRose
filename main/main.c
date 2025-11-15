@@ -12,6 +12,9 @@
 
 #define DELAY_API_STATION_UPDATE 5*60*1000 // 5 min
 #define DELAY_LED_UPDATE 1*10*1000 // 10s
+#define LED_TASK_PRIORITY 10
+#define API_TASK_PRIORITY 5
+
 
 static const char* TAG = "main";
 
@@ -30,6 +33,7 @@ void update_station_api_call(void *pvParameters) {
         for (int s=0; s<NUM_STATIONS; s++) {
             update_station_departure(s);
             print_memory();
+            taskYIELD();
         }
 
         // Wait before running again
@@ -69,7 +73,15 @@ void app_main(void)
         "update_station_api_call",
         4096,
         NULL,
-        5,
+        API_TASK_PRIORITY,
+        NULL
+    );
+    xTaskCreate(
+        update_led,
+        "update_led",
+        2048,
+        NULL,
+        LED_TASK_PRIORITY,
         NULL
     );
 }
