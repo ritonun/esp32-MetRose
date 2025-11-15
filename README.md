@@ -77,11 +77,12 @@ Create a config.h file in main/ with values:
 
 ## Functionnality
 ### Current functionnality
-- make an api call to a specific station & line
-- parse the json answer to get the next departures datetimes
-- convert them into timestamps
+- api call to get next departures for each station
+- 3 state of led: OFF, ON, BLINK
 
 ### To Do
-- mapper to map each station/next departures to an I/O led
-- I/O ON or OFF dependant on time and presence of a train/tram
-- monitoring of memory consumption
+- fix terminus bug: we only have departures, no arrival for end of line
+- implement fading
+- control led intensity/ better led control
+- code refactor for resuse later with metro and/or paris
+
