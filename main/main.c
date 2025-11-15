@@ -15,8 +15,10 @@
 
 #define DELAY_API_STATION_UPDATE 5*60*1000 // 5 min
 #define DELAY_LED_UPDATE 1*10*1000 // 10s
+#define DELAY_DISPLAY_LED 1*1*1000 // 1s
 #define LED_TASK_PRIORITY 10
 #define API_TASK_PRIORITY 5
+#define DISPLAY_LED_TASK_PRIORITY 15
 
 
 struct tm timeinfo = { 0 };
@@ -59,6 +61,15 @@ void update_led(void *pvParameters) {
     }
 }
 
+void display_leds(void *pvParameters) {
+    const TickType_t delay_ticks = pdMS_TO_TICKS(DELAY_DISPLAY_LED);
+
+    while(1) {
+        set_leds();
+        vTaskDelay(delay_ticks);
+    }
+}
+
 void app_main(void)
 {
     // Init non-volatile storage (NVS)
@@ -76,7 +87,7 @@ void app_main(void)
 
     initialize_sntp();
     
-
+    init_leds();
 
     time_t now = 0;
     int retry = 0;
