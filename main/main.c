@@ -10,6 +10,8 @@
 #include "config.h"
 #include "station.h"
 
+#define DELAY_API_STATION_UPDATE 5*60*1000 // 5 min
+
 static const char* TAG = "main";
 
 void print_memory(void) {
@@ -17,6 +19,21 @@ void print_memory(void) {
     ESP_LOGI("MEMORY", "Free heap: %u bytes", free_heap);
     size_t min_free_heap = esp_get_minimum_free_heap_size();
     ESP_LOGI("MEMORY", "Minimum ever free heap: %u bytes", min_free_heap);
+}
+
+void update_station_api_call(void *pvParameters) {
+    const TickType_t delay_ticks = pdMS_TO_TICKS(DELAY_API_STATION_UPDATE); // 5 minutes
+
+    while (1) {
+        // appel api pour actualiser les departures times de toutes les stations
+        for (int s=0; s<NUM_STATIONS; s++) {
+            update_station_departure(s);
+            print_memory();
+        }
+
+        // Wait before running again
+        vTaskDelay(delay_ticks);
+    }
 }
 
 void app_main(void)
@@ -35,11 +52,12 @@ void app_main(void)
     // initialisation de la liste de struct contenant les infos stations
     init_stations();
 
-    // appel api pour actualiser les departures times de toutes les stations
-    for (int s=0; s<3; s++) {
-        update_station_departure(s);
-        print_memory();
-    }
-    
-    vTaskDelay(pdMS_TO_TICKS(5 * 60 * 1000));
+    xTaskCreate(
+        update_station_api_call,
+        "update_station_api_call",
+        4096,
+        NULL,
+        5,
+        NULL
+    );
 }
