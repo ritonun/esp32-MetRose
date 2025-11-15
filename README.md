@@ -81,6 +81,7 @@ Create a config.h file in main/ with values:
 - 3 state of led: OFF, ON, BLINK
 
 ### To Do
+- blink when in transit
 - fix terminus bug: we only have departures, no arrival for end of line
 - implement fading
 - control led intensity/ better led control
