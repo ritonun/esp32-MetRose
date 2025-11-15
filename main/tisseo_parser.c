@@ -8,8 +8,7 @@
 
 const char *TAG = "tisseo_parser";
 
-datetimes_list_str_t *extract_departure_time_str(cJSON *resp)
-{
+datetimes_list_str_t *extract_departure_time_str(cJSON *resp) {
     cJSON *departures = cJSON_GetObjectItem(resp, "departures");
 
     cJSON *departures_array;

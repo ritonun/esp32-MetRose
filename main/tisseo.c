@@ -20,8 +20,7 @@ typedef struct {
     esp_err_t err;
 } tisseo_response_t;
 
-static esp_err_t http_event_handler(esp_http_client_event_t *evt)
-{
+static esp_err_t http_event_handler(esp_http_client_event_t *evt) {
     tisseo_response_t *resp = (tisseo_response_t *)evt->user_data;
 
     switch (evt->event_id) {
@@ -51,8 +50,7 @@ static esp_err_t http_event_handler(esp_http_client_event_t *evt)
     return ESP_OK;
 }
 
-static tisseo_response_t http_get(const char *url)
-{
+static tisseo_response_t http_get(const char *url) {
     tisseo_response_t resp = {
         .buffer = NULL,
         .status_code = 0,
@@ -88,8 +86,7 @@ static tisseo_response_t http_get(const char *url)
     return resp;
 }
 
-cJSON *tisseo_get_stops_schedules(const char *stop_area_id, const char *line_id)
-{
+cJSON *tisseo_get_stops_schedules(const char *stop_area_id, const char *line_id) {
     char url[256];
     int write_url = snprintf(url, sizeof(url),
                     "%s?stopAreaId=%s&lineId=%s&key=%s",

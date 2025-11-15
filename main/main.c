@@ -29,17 +29,17 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
 
-    ESP_LOGI(TAG, "Starting Wi-Fi Station example...");
+    ESP_LOGI(TAG, "Démarrage wifi...");
     wifi_init_sta();  // from wifi.c
     
-    // print_memory();
+    // initialisation de la liste de struct contenant les infos stations
     init_stations();
-    // print_memory();
+
+    // appel api pour actualiser les departures times de toutes les stations
     for (int s=0; s<NUM_STATIONS; s++) {
         update_station_departure(s);
         print_memory();
     }
     
     vTaskDelay(pdMS_TO_TICKS(5 * 60 * 1000));
-
 }

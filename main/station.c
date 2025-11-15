@@ -137,10 +137,10 @@ void init_stations(void) {
     strncpy(stations[24].name, "MEETT", MAX_NAME_LEN);
     strncpy(stations[24].stop_area_id, "stop_area:SA_2334", STOP_AREA_ID_LEN);
     reset_station(stations[24].index);
-
 }
 
 void reset_station(int station_index) {
+    /*Reset des var de la station*/
     for (int i=0; i<MAX_DEPARTURES; i++) {
         stations[station_index].departures[i] = 0;
     }
@@ -148,7 +148,6 @@ void reset_station(int station_index) {
 }
 
 void update_station_departure(int station_index) {
-    
     // make api request for station
     ESP_LOGI(TAG, "Trying station %s", stations[station_index].name);
 
@@ -177,8 +176,6 @@ void update_station_departure(int station_index) {
         return;
     }
 
-
-
     // reset station data before putting new data
     reset_station(station_index);
 
@@ -198,7 +195,6 @@ void update_station_departure(int station_index) {
     for (int i = 0; i < datetimes->len; i++) {
         printf("Departure: %s, tm: %lld\n", datetimes->departures_times[i], timestamps[i]);
     }
-
 
     // free memory
     ESP_LOGI("FREE", "TIMESTAMP:");
