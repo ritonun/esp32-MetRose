@@ -9,7 +9,11 @@
 #define RANGE_SEC_CLIGNOTEMENT 30
 #define RANGE_SEC_ON 70
 
+#define BLEU 20
+
 extern uint8_t leds[NUM_STATIONS*2];
+extern int16_t fade;
+extern bool fade_pp;
 
 bool is_in_range(time_t ts, int min_range, int max_range);
 void check_current_departure(int station_index);
@@ -17,3 +21,4 @@ void initialize_sntp(void);
 void init_leds(void);
 void set_leds(void);
 void clignotement_leds(void);
+void fading(int led_index);

@@ -9,6 +9,8 @@
 uint8_t leds[NUM_STATIONS*2];
 static const char* TAG = "led";
 static bool clignotement = false;
+int16_t fade = 0;
+bool fade_pp = true;
 
 void initialize_sntp(void) {
     ESP_LOGI("TIME", "Initializing SNTP");
@@ -57,7 +59,6 @@ void check_current_departure(int station_index) {
             leds[49-station_index] = LED_ON;
         }
     }
-    //set_leds();
 }
 
 void set_leds(void) {
@@ -65,12 +66,12 @@ void set_leds(void) {
     for (int i=0; i<NUM_STATIONS*2; i++) {
         if (leds[i] == LED_CLIGNOTEMENT) {
             if (clignotement) {
-                setPixel(i, 0, 0, 255);
+                setPixel(i, 0, 0, BLEU);
             } else {
                 setPixel(i, 0, 0, 0);
             }
         } else if (leds[i] == LED_ON) {
-            setPixel(i, 0, 0, 255);
+            setPixel(i, 0, 0, BLEU);
         } else {
             setPixel(i, 0, 0, 0);
         }
@@ -79,18 +80,8 @@ void set_leds(void) {
     show();
 }
 
-void clignotement_leds(void) {
-    ESP_LOGD(TAG, "Clignotement des leds");
-    static bool clignotement = false;
-
-    for (int i=0; i<NUM_STATIONS*2; i++) {
-        if (leds[i] == LED_CLIGNOTEMENT) {
-            if (clignotement) {
-                setPixel(i, 0, 0, 255);
-            } else {
-                setPixel(i, 0, 0, 0);
-            }
-        }
-    }
-    clignotement = !clignotement;
+void fading(int led_index) {
+    if (leds[led_index] ==LED_CLIGNOTEMENT) {
+        setPixel(led_index, 0, 0, fade);
+    }   
 }

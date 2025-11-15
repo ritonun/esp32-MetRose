@@ -3,14 +3,18 @@
 ## diagramm to do
 ```mermaid
  classDiagram
+ direction LR
     note "MetRose"
     wifi <-- main
     station <-- main
-    leds <-- station
-    led_controller <-- leds
     station --> tisseo
-    config.h --> wifi
-    config.h --> tisseo
+    mapper --> leds 
+    leds --> led_controller
+    mapper --> station
+
+    class mapper{
+        +void from_station_to_led()
+    }
 
     class station {
         int MAX_DEPARTURES
@@ -40,7 +44,9 @@
         + leds_init()
         + update_leds()
         + blink_led(uint16_t led_index)
+        + fade_update()
         - is_in_range()
+        - handle_terminus()
     }
 
     class led_controller{
