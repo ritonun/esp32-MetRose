@@ -52,12 +52,13 @@ void update_led(void *pvParameters) {
 
     while (1) {
         // update led
-        for (int i=0; i<NUM_STATIONS; i++) {
-            check_current_departure(i);
+        for (int d=1; d<3; d++) {
+            for (int i=0; i<NUM_STATIONS; i++) {
+                check_current_departure(i, d);
+            }
         }
         vTaskDelay(delay_ticks);
-    }
-    
+    }   
 }
 
 

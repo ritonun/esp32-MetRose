@@ -17,7 +17,7 @@ extern int16_t fade;
 extern bool fade_pp;
 
 bool is_in_range(time_t ts, int min_range, int max_range);
-void check_current_departure(int station_index);
+void check_current_departure(int station_index, int direction);
 void initialize_sntp(void);
 void init_leds(void);
 void set_leds(void);
