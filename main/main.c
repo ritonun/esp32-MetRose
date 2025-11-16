@@ -14,8 +14,8 @@
 #include "led_controller.h"
 
 #define DELAY_API_STATION_UPDATE 5*60*1000 // 5 min
-#define DELAY_LED_UPDATE 2*1000 // 1
-#define DELAY_BLINK_LED 2*250 // 500ms
+#define DELAY_LED_UPDATE 5*1000 // 5s
+#define DELAY_BLINK_LED 2*500 // 500ms
 #define LED_TASK_PRIORITY 5
 #define API_TASK_PRIORITY 2
 #define BLINK_LED_PRIORITY 8
@@ -51,15 +51,15 @@ void update_led(void *pvParameters) {
     const TickType_t delay_ticks = pdMS_TO_TICKS(DELAY_LED_UPDATE);
 
     while (1) {
-
         // update led
         for (int i=0; i<NUM_STATIONS; i++) {
             check_current_departure(i);
         }
-
         vTaskDelay(delay_ticks);
     }
+    
 }
+
 
 void blink_led(void *pvParameters) {
     const TickType_t delay_ticks = pdMS_TO_TICKS(DELAY_BLINK_LED);

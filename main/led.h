@@ -9,9 +9,10 @@
 #define RANGE_SEC_CLIGNOTEMENT 30
 #define RANGE_SEC_ON 70
 
-#define BLEU 20
+#define BLEU 10
 
 extern uint8_t leds[NUM_STATIONS*2];
+extern uint8_t leds_previous_state[NUM_STATIONS*2];
 extern int16_t fade;
 extern bool fade_pp;
 
