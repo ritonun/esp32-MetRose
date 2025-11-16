@@ -9,8 +9,8 @@
 #define STOP_AREA_ID_LEN 20
 #define LINE "line:68"
 
-#define TERMINUS_1 0
-#define TERMINUS_2 (NUM_STATIONS - 1)
+#define TERMINUS_1 (NUM_STATIONS - 1)
+#define TERMINUS_2 0
 
 typedef struct {
     int index;                              // LED Index

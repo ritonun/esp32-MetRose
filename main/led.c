@@ -112,14 +112,14 @@ void check_current_departure(int station_index) {
         if (is_in_range(station.departures1[i], 0, RANGE_SEC_CLIGNOTEMENT) == true) {
             is_on = true;
         } 
-        if (is_in_range(station.departures1[i], RANGE_SEC_CLIGNOTEMENT, 4*60) == true) {
+        if (is_in_range(station.departures1[i], RANGE_SEC_CLIGNOTEMENT, 2*60) == true) {
             is_within_arrival = true;
         }
     }
     
     if (is_on) {
         leds[station_index] = LED_ON;
-    } else if (!is_on && is_within_arrival && previous_state_1 == LED_CLIGNOTEMENT) {
+    } else if (is_within_arrival && previous_state_1 == LED_CLIGNOTEMENT) {
         leds[station_index] = LED_CLIGNOTEMENT;
     } else {
         leds[station_index] = LED_OFF;
@@ -134,6 +134,11 @@ void check_current_departure(int station_index) {
         leds[station_index] = LED_CLIGNOTEMENT;
     } else if (previous_state_1 == LED_OFF && leds[station_index] == LED_ON) {
         leds[station_index] = LED_ON;
+    }
+
+    // debug
+    if (leds[station_index] == LED_CLIGNOTEMENT) {
+        ESP_LOGI(TAG, "Sta %s range 2min: %d", station.name, is_in_range(station.departures1[0], RANGE_SEC_CLIGNOTEMENT, 2*60));
     }
 }
 
